@@ -8,7 +8,7 @@ defineProps<{
 
 const expanded = ref(false)
 
-const resourceName = 'siku_boilerplate'
+const resourceName = 'siku_hud'
 
 const deps = [
   { name: 'Vue', version: vueVersion },

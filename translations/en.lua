@@ -1,0 +1,22 @@
+return {
+  web = {
+    ['hud.voice'] = 'Voice',
+    ['hud.voiceMode.whisper'] = 'Whisper',
+    ['hud.voiceMode.normal'] = 'Normal',
+    ['hud.voiceMode.shout'] = 'Shout',
+    ['hud.radio'] = 'Radio',
+    ['hud.radioChannel'] = 'Channel {channel}',
+    ['hud.speed'] = 'Speed',
+    ['hud.kmh'] = 'KM/H',
+    ['hud.fuel'] = 'Fuel',
+    ['hud.seatbelt'] = 'Seatbelt',
+    ['hud.engine'] = 'Engine',
+    ['hud.lights'] = 'Lights',
+    ['hud.state.buckled'] = 'Buckled',
+    ['hud.state.unbuckled'] = 'Unbuckled',
+    ['hud.state.on'] = 'On',
+    ['hud.state.off'] = 'Off',
+    ['hud.state.auto'] = 'Auto',
+    ['hud.state.high'] = 'High beams',
+  },
+}

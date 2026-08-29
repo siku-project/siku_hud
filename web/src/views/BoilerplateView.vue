@@ -4,15 +4,24 @@ import type { Component } from 'vue'
 import DevTopBar from '@/components/boilerplate/DevTopBar.vue'
 import DevFab from '@/components/boilerplate/DevFab.vue'
 import DevViewSelector from '@/components/boilerplate/DevViewSelector.vue'
-import MainView from '@/views/MainView.vue'
+import HudDevPanel from '@/components/dev/HudDevPanel.vue'
+import HudView from '@/views/HudView.vue'
+import { resolveScenario } from '@/mock/scenarios'
+import { useHudStore } from '@/stores/hud'
 import backgroundUrl from '@/assets/boilerplate-background.jpg'
 
+const params = new URLSearchParams(window.location.search)
+
+useHudStore().applyState(resolveScenario(params.get('scenario')))
+
+const showPanel = params.get('panel') !== '0'
+
 const viewComponents: Record<string, Component> = {
-  Hud: MainView,
+  Hud: HudView,
 }
 
 const views: string[] = Object.keys(viewComponents)
-const currentView = ref('none')
+const currentView = ref(params.get('view') ?? 'Hud')
 
 const activeComponent = computed<Component | null>(() =>
   currentView.value !== 'none' ? (viewComponents[currentView.value] ?? null) : null,
@@ -29,6 +38,8 @@ const handleSelectView = (view: string) => {
     :style="{ backgroundImage: `url(${backgroundUrl})` }"
   >
     <component :is="activeComponent" v-if="activeComponent" />
+
+    <HudDevPanel v-if="showPanel && currentView === 'Hud'" />
 
     <DevTopBar />
     <DevFab :current-view="currentView" />
