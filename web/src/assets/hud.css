@@ -1,0 +1,66 @@
+:root {
+  --hud-bg: rgba(18, 22, 34, 0.92);
+  --hud-bg-strong: rgba(25, 31, 45, 0.94);
+  --hud-tile: rgba(25, 31, 45, 0.92);
+  --hud-border: rgba(42, 52, 71, 0.95);
+  --hud-border-strong: rgba(64, 78, 105, 0.9);
+  --hud-track: rgba(48, 59, 81, 0.75);
+  --hud-ring-back: rgba(14, 17, 27, 0.9);
+
+  --hud-text: #f5f7fc;
+  --hud-text-dim: #a4acbc;
+  --hud-text-faint: rgba(164, 172, 188, 0.62);
+
+  --hud-cyan: #69ceff;
+  --hud-violet: #a18cff;
+  --hud-good: #55d6a5;
+  --hud-warn: #f5b85a;
+  --hud-alert: #ff6b78;
+
+  --hud-radius: 12px;
+  --hud-radius-sm: 9px;
+  --hud-shadow: inset 0 1px 0 rgba(245, 247, 252, 0.04), 0 10px 24px -14px rgba(0, 0, 0, 0.7);
+
+  --hud-edge: 1.4vw;
+  --hud-bottom: 2.6vh;
+  --hud-minimap-top: 21vh;
+  --hud-minimap-right: 16.8vw;
+}
+
+.hud-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--hud-radius);
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  box-shadow: var(--hud-shadow);
+}
+
+.hud-panel::before {
+  content: '';
+  position: absolute;
+  inset-inline: 14%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(245, 247, 252, 0.28) 30%,
+    rgba(105, 206, 255, 0.4) 55%,
+    rgba(161, 140, 255, 0.32) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hud-caption {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-text-faint);
+}
+
+.hud-num {
+  font-variant-numeric: tabular-nums;
+}

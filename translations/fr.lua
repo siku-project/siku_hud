@@ -1,0 +1,22 @@
+return {
+  web = {
+    ['hud.voice'] = 'Voix',
+    ['hud.voiceMode.whisper'] = 'Murmure',
+    ['hud.voiceMode.normal'] = 'Normal',
+    ['hud.voiceMode.shout'] = 'Fort',
+    ['hud.radio'] = 'Radio',
+    ['hud.radioChannel'] = 'Canal {channel}',
+    ['hud.speed'] = 'Vitesse',
+    ['hud.kmh'] = 'KM/H',
+    ['hud.fuel'] = 'Carburant',
+    ['hud.seatbelt'] = 'Ceinture',
+    ['hud.engine'] = 'Moteur',
+    ['hud.lights'] = 'Phares',
+    ['hud.state.buckled'] = 'Bouclée',
+    ['hud.state.unbuckled'] = 'Détachée',
+    ['hud.state.on'] = 'Allumé',
+    ['hud.state.off'] = 'Éteint',
+    ['hud.state.auto'] = 'Auto',
+    ['hud.state.high'] = 'Route',
+  },
+}
