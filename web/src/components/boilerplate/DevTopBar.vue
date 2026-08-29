@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const resourceName = 'siku_boilerplate'
+const resourceName = 'siku_hud'
 const framework = 'Vue 3'
 const isDev = import.meta.env.DEV
 </script>

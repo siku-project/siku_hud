@@ -35,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: siku-project/siku_ci/actions/web-checks@v1
+        with:
+          locales: 'true'
 
   guard:
     name: guard
