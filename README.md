@@ -2,7 +2,7 @@
 
 A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.
 
-![Version](https://img.shields.io/badge/version-0.1.0-4785bd)
+![Version](https://img.shields.io/badge/version-0.2.0-4785bd)
 ![FiveM](https://img.shields.io/badge/fx__version-cerulean-4785bd)
 ![Lua](https://img.shields.io/badge/Lua-5.4-4785bd)
 ![Vue](https://img.shields.io/badge/NUI-Vue%203-4785bd)
@@ -26,8 +26,9 @@ A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive pl
 | Resource | Required | Purpose |
 |---|---|---|
 | [`siku_core`](https://github.com/siku-project/siku_core) | Yes | Framework core: SDK, timers, locale, dependency guard. |
+| [`siku_status`](https://github.com/siku-project/siku_status) | Yes | Owns hunger and thirst and feeds their values to the HUD. |
 
-`siku_core` must be started **before** `siku_hud`.
+`siku_core` and `siku_status` must be started **before** `siku_hud`.
 
 ## Installation
 
@@ -52,6 +53,7 @@ bun run build
 
 ```cfg
 ensure siku_core
+ensure siku_status
 ensure siku_hud
 ```
 
@@ -102,7 +104,7 @@ Health, armor, stamina and oxygen, position, street and zone, in-game clock and 
 
 - The vehicle cluster appears when entering any vehicle and disappears on exit.
 - The seatbelt state is not shown for motorcycles, cycles, boats, helicopters and planes (`seatbeltExemptClasses`).
-- Hunger and thirst default to 100 until a status resource takes over.
+- Hunger and thirst are owned by [`siku_status`](https://github.com/siku-project/siku_status): the HUD only displays what it receives through `SetStatus`.
 
 ## Translations
 
