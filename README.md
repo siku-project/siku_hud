@@ -2,7 +2,7 @@
 
 A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.
 
-![Version](https://img.shields.io/badge/version-0.3.0-4785bd)
+![Version](https://img.shields.io/badge/version-0.4.0-4785bd)
 ![FiveM](https://img.shields.io/badge/fx__version-cerulean-4785bd)
 ![Lua](https://img.shields.io/badge/Lua-5.4-4785bd)
 ![Vue](https://img.shields.io/badge/NUI-Vue%203-4785bd)
@@ -65,7 +65,7 @@ All options live in `config/` and are documented inline.
 
 | File | Options |
 |---|---|
-| `config/hud.lua` | `customization` (per-component `enabled` / `color` / default position, scale bounds, default colors, save interval), `intervals` (vitals / location / vehicle / voice polling, ms), `staminaLinger`, `underwaterCapacity`, `seatbeltExemptClasses`, `voice` defaults (`mode`, `range`), `weather` (per weather type: interface icon key and displayed temperature) |
+| `config/hud.lua` | `customization` (per-component `enabled` / `color` / default position, scale bounds, default colors, save interval), `keybinds` (`seatbelt`, `engine`), `intervals` (vitals / location / vehicle / voice polling, ms), `staminaLinger`, `underwaterCapacity`, `seatbeltExemptClasses`, `voice` defaults (`mode`, `range`), `weather` (per weather type: interface icon key and displayed temperature) |
 | `config/migration.lua` | The `hud_preferences` schema (one JSON row per character), applied through the core migration service |
 | `config/translation.lua` | `language` (`fr` / `en`) |
 
@@ -74,6 +74,15 @@ All options live in `config/` and are documented inline.
 | Command | Purpose |
 |---|---|
 | `/hud` | Opens the customization dashboard: colors, sizes, positions, per-component and full reset. |
+
+### Keybinds
+
+| Key | Action |
+|---|---|
+| `B` | Buckles or unbuckles the seatbelt — only in a vehicle whose class wears one; a buckled character no longer flies through the windscreen, and the belt comes off on exit. |
+| `L` | Starts or stops the engine, from the driver seat. |
+
+Defaults live in `config/hud.lua` (`keybinds`) and every player can rebind them in the GTA keybind settings.
 
 ## API
 

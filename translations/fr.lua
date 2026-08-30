@@ -1,5 +1,7 @@
 return {
   ['command_hud'] = 'Personnaliser votre HUD',
+  ['keybind_seatbelt'] = 'HUD - Attacher / détacher la ceinture',
+  ['keybind_engine'] = 'HUD - Allumer / éteindre le moteur',
 
   web = {
     ['hud.component.health'] = 'Santé',

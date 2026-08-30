@@ -63,6 +63,16 @@ HudConfig = {
   --- The breath duration a full oxygen gauge represents, in seconds.
   underwaterCapacity = 10.0,
 
+  --- Keybinds
+  ---
+  --- Default keys, shown in the GTA keybind settings where every player
+  --- can rebind them. `seatbelt` toggles the belt in a vehicle whose class
+  --- wears one; `engine` starts or stops the engine from the driver seat.
+  keybinds = {
+    seatbelt = 'B',
+    engine = 'L',
+  },
+
   --- Seatbelt exempt classes
   ---
   --- Vehicle classes whose cluster never shows a seatbelt state.

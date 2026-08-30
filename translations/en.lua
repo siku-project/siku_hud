@@ -1,5 +1,7 @@
 return {
   ['command_hud'] = 'Customize your HUD',
+  ['keybind_seatbelt'] = 'HUD - Buckle / unbuckle the seatbelt',
+  ['keybind_engine'] = 'HUD - Start / stop the engine',
 
   web = {
     ['hud.component.health'] = 'Health',
