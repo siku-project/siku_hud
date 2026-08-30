@@ -8,3 +8,14 @@ end
 
 Siku.print.success(('Linked to siku_core (%s)'):format(dependency.currentVersion))
 Siku.version.checkRelease('siku-project/siku_hud')
+
+--- Everything that needs the database waits in its own thread: the modules
+--- below this file do not exist yet while it loads, and the migration only
+--- completes once the database answered.
+CreateThread(function()
+  if not Siku.migration.run(MigrationConfig) then
+    return
+  end
+
+  RestoreConnectedSessions()
+end)

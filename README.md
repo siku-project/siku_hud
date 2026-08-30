@@ -2,7 +2,7 @@
 
 A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.
 
-![Version](https://img.shields.io/badge/version-0.2.0-4785bd)
+![Version](https://img.shields.io/badge/version-0.3.0-4785bd)
 ![FiveM](https://img.shields.io/badge/fx__version-cerulean-4785bd)
 ![Lua](https://img.shields.io/badge/Lua-5.4-4785bd)
 ![Vue](https://img.shields.io/badge/NUI-Vue%203-4785bd)
@@ -19,6 +19,8 @@ A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive pl
 - **Performance-first protocol** — Lua collectors poll on fixed intervals and forward **only the keys that changed**; nothing is pushed to the NUI per frame.
 - **Single state, single bridge** — one normalized HUD contract, one Pinia store, one NUI message listener; components never talk to FiveM directly.
 - **External resource API** — hunger, thirst, voice, radio, seatbelt and visibility are all driven through exports, so `siku_status`, a voice resource or a fuel system plug in without touching this codebase.
+- **Per-character customization** — `/hud` opens a centered Aurora Slate dashboard with a live preview: color (solid or two-color gradient), proportional size and drag-and-drop position for every component the server allows. Positions are stored as screen fractions, so a layout survives any resolution.
+- **Server-first preferences** — the server configuration decides what exists; player preferences are sparse overrides validated server-side (known and enabled components only, clamped scales and positions, normalized colors), cached in memory and written to the database on switch, disconnect, stop and a periodic flush. Disabling a component server-side retires it everywhere, stored preferences included.
 - **i18n pipeline** — the server language is pushed to the NUI at runtime (`fr` / `en`).
 
 ## Dependencies
@@ -63,8 +65,15 @@ All options live in `config/` and are documented inline.
 
 | File | Options |
 |---|---|
-| `config/hud.lua` | `intervals` (vitals / location / vehicle / voice polling, ms), `staminaLinger`, `underwaterCapacity`, `seatbeltExemptClasses`, `voice` defaults (`mode`, `range`), `weather` (per weather type: interface icon key and displayed temperature) |
+| `config/hud.lua` | `customization` (per-component `enabled` / `color` / default position, scale bounds, default colors, save interval), `intervals` (vitals / location / vehicle / voice polling, ms), `staminaLinger`, `underwaterCapacity`, `seatbeltExemptClasses`, `voice` defaults (`mode`, `range`), `weather` (per weather type: interface icon key and displayed temperature) |
+| `config/migration.lua` | The `hud_preferences` schema (one JSON row per character), applied through the core migration service |
 | `config/translation.lua` | `language` (`fr` / `en`) |
+
+### Commands
+
+| Command | Purpose |
+|---|---|
+| `/hud` | Opens the customization dashboard: colors, sizes, positions, per-component and full reset. |
 
 ## API
 

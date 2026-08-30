@@ -1,6 +1,8 @@
+import { useCustomizationStore } from '@/stores/customization'
 import { useHudStore } from '@/stores/hud'
 import { applyLocale, type LocalePayload } from '@/utils/locale'
 import { sendNuiCallback } from '@/utils/nui'
+import type { CustomizationPayload } from '@/types/customization'
 
 interface NuiMessage {
   action?: string
@@ -13,6 +15,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 export const initNuiBridge = (): (() => void) => {
   const store = useHudStore()
+  const customization = useCustomizationStore()
 
   const handleMessage = (event: MessageEvent<NuiMessage>): void => {
     const { action, locale, payload } = event.data ?? {}
@@ -26,7 +29,17 @@ export const initNuiBridge = (): (() => void) => {
       return
     }
 
+    if (action === 'siku_hud:nui:openSettings') {
+      customization.openSettings()
+      return
+    }
+
     if (!isRecord(payload)) {
+      return
+    }
+
+    if (action === 'siku_hud:nui:setCustomization') {
+      customization.applyPayload(payload as unknown as CustomizationPayload)
       return
     }
 

@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'Siku Studio'
 description 'A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.'
-version '0.2.0'
+version '0.3.0'
 
 name 'siku_hud'
 
@@ -16,7 +16,13 @@ shared_scripts {
 }
 
 server_scripts {
+  '@oxmysql/lib/MySQL.lua',
+  'config/migration.lua',
   'server/init.lua',
+  'server/modules/prefs/validate.lua',
+  'server/modules/prefs/store.lua',
+  'server/modules/prefs/sync.lua',
+  'server/modules/command.lua',
 }
 
 client_scripts {
@@ -26,6 +32,7 @@ client_scripts {
   'client/modules/location.lua',
   'client/modules/vehicle.lua',
   'client/modules/voice.lua',
+  'client/modules/settings.lua',
   'client/modules/nui.lua',
 }
 
@@ -39,4 +46,5 @@ files {
 dependencies {
   'siku_core',
   'siku_status',
+  'oxmysql',
 }

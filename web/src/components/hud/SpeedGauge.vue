@@ -75,8 +75,8 @@ const displaySpeed = computed(() => Math.round(props.speed))
     <svg class="speedo__dial" viewBox="0 0 100 100" aria-hidden="true">
       <defs>
         <linearGradient :id="gradientId" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0%" stop-color="#69ceff" />
-          <stop offset="100%" stop-color="#a18cff" />
+          <stop offset="0%" style="stop-color: var(--hud-grad-a, #69ceff)" />
+          <stop offset="100%" style="stop-color: var(--hud-grad-b, #a18cff)" />
         </linearGradient>
       </defs>
 
@@ -243,7 +243,7 @@ const displaySpeed = computed(() => Math.round(props.speed))
   margin-top: 6px;
   font-size: 20px;
   font-weight: 600;
-  color: var(--hud-cyan);
+  color: var(--hud-grad-a, var(--hud-cyan));
 }
 
 .speedo__caption {
