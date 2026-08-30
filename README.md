@@ -2,7 +2,7 @@
 
 A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.
 
-![Version](https://img.shields.io/badge/version-0.4.0-4785bd)
+![Version](https://img.shields.io/badge/version-1.0.0-4785bd)
 ![FiveM](https://img.shields.io/badge/fx__version-cerulean-4785bd)
 ![Lua](https://img.shields.io/badge/Lua-5.4-4785bd)
 ![Vue](https://img.shields.io/badge/NUI-Vue%203-4785bd)
