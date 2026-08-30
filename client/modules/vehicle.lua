@@ -61,6 +61,8 @@ local function collectVehicle()
   local vehicle <const> = GetVehiclePedIsIn(PlayerPedId(), false)
 
   if vehicle == 0 then
+    ResetSeatbelt()
+
     if HudState.vehicle.active then
       HudState.vehicle.active = false
       statesSignature = ''
