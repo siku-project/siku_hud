@@ -6,9 +6,47 @@ import SideGauge from '@/components/hud/SideGauge.vue'
 import SpeedGauge from '@/components/hud/SpeedGauge.vue'
 import VehicleStates from '@/components/hud/VehicleStates.vue'
 import { useHudStore } from '@/stores/hud'
+import type { VehicleStateEntry } from '@/types/hud'
+
+const props = withDefaults(
+  defineProps<{
+    preview?: boolean
+  }>(),
+  {
+    preview: false,
+  },
+)
 
 const { t } = useI18n()
 const { vehicle } = storeToRefs(useHudStore())
+
+const PREVIEW_STATES: VehicleStateEntry[] = [
+  {
+    id: 'seatbelt',
+    icon: 'mdi-seatbelt',
+    label: 'hud.seatbelt',
+    value: 'hud.state.buckled',
+    tone: 'positive',
+  },
+  {
+    id: 'engine',
+    icon: 'mdi-engine-outline',
+    label: 'hud.engine',
+    value: 'hud.state.on',
+    tone: 'positive',
+  },
+  {
+    id: 'lights',
+    icon: 'mdi-car-light-dimmed',
+    label: 'hud.lights',
+    value: 'hud.state.auto',
+    tone: 'neutral',
+  },
+]
+
+const states = computed(() =>
+  props.preview && vehicle.value.states.length === 0 ? PREVIEW_STATES : vehicle.value.states,
+)
 
 const fuelTone = computed(() => {
   if (vehicle.value.fuel <= 15) {
@@ -36,42 +74,40 @@ const tempValueTone = computed(() => {
 </script>
 
 <template>
-  <Transition name="cluster-pop">
-    <div v-if="vehicle.active" class="cluster">
-      <div class="cluster__gauges">
-        <SideGauge
-          class="cluster__side cluster__side--left"
-          side="left"
-          icon="mdi-gas-station-outline"
-          :ring-value="vehicle.fuel"
-          :display="`${Math.round(vehicle.fuel)}%`"
-          :label="t('hud.fuel')"
-          marker-text="E"
-          marker-tone="alert"
-          :tone="fuelTone"
-        />
-        <SpeedGauge
-          class="cluster__speedo"
-          :speed="vehicle.speed"
-          :gear="vehicle.gear"
-          :rpm="vehicle.rpm"
-        />
-        <SideGauge
-          class="cluster__side cluster__side--right"
-          side="right"
-          icon="mdi-thermometer"
-          :ring-value="100"
-          static-arc
-          :display="`${Math.round(vehicle.engineTemp)}°C`"
-          :value-tone="tempValueTone"
-          :label="t('hud.engine')"
-          marker-icon="mdi-coolant-temperature"
-        />
-      </div>
-
-      <VehicleStates :states="vehicle.states" />
+  <div class="cluster">
+    <div class="cluster__gauges">
+      <SideGauge
+        class="cluster__side cluster__side--left"
+        side="left"
+        icon="mdi-gas-station-outline"
+        :ring-value="vehicle.fuel"
+        :display="`${Math.round(vehicle.fuel)}%`"
+        :label="t('hud.fuel')"
+        marker-text="E"
+        marker-tone="alert"
+        :tone="fuelTone"
+      />
+      <SpeedGauge
+        class="cluster__speedo"
+        :speed="vehicle.speed"
+        :gear="vehicle.gear"
+        :rpm="vehicle.rpm"
+      />
+      <SideGauge
+        class="cluster__side cluster__side--right"
+        side="right"
+        icon="mdi-thermometer"
+        :ring-value="100"
+        static-arc
+        :display="`${Math.round(vehicle.engineTemp)}°C`"
+        :value-tone="tempValueTone"
+        :label="t('hud.engine')"
+        marker-icon="mdi-coolant-temperature"
+      />
     </div>
-  </Transition>
+
+    <VehicleStates :states="states" />
+  </div>
 </template>
 
 <style scoped>
@@ -99,18 +135,5 @@ const tempValueTone = computed(() => {
 .cluster__side--right {
   margin-left: -34px;
   margin-bottom: 2px;
-}
-
-.cluster-pop-enter-active,
-.cluster-pop-leave-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-.cluster-pop-enter-from,
-.cluster-pop-leave-to {
-  opacity: 0;
-  transform: translateY(12px);
 }
 </style>

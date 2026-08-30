@@ -11,19 +11,17 @@ const modeLabel = computed(() => t(`hud.voiceMode.${voice.value.mode}`))
 </script>
 
 <template>
-  <Transition name="card-pop">
-    <div v-if="voice.active" class="card hud-panel">
-      <span class="card__tile" :class="{ 'card__tile--live': voice.talking }">
-        <v-icon size="15" :icon="voice.talking ? 'mdi-microphone' : 'mdi-microphone-outline'" />
-      </span>
+  <div class="card hud-panel">
+    <span class="card__tile" :class="{ 'card__tile--live': voice.talking }">
+      <v-icon size="15" :icon="voice.talking ? 'mdi-microphone' : 'mdi-microphone-outline'" />
+    </span>
 
-      <div class="card__body">
-        <span class="hud-caption">{{ t('hud.voice') }}</span>
-        <span class="card__main">{{ modeLabel }}</span>
-        <span class="card__sub hud-num">{{ voice.range }}m</span>
-      </div>
+    <div class="card__body">
+      <span class="hud-caption">{{ t('hud.voice') }}</span>
+      <span class="card__main">{{ modeLabel }}</span>
+      <span class="card__sub hud-num">{{ voice.range }}m</span>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style scoped>
@@ -53,8 +51,13 @@ const modeLabel = computed(() => t(`hud.voiceMode.${voice.value.mode}`))
   border-color: transparent;
   background:
     linear-gradient(var(--hud-tile), var(--hud-tile)) padding-box,
-    linear-gradient(135deg, var(--hud-cyan), var(--hud-violet)) border-box;
-  color: var(--hud-cyan);
+    linear-gradient(
+        135deg,
+        var(--hud-grad-a, var(--hud-cyan)),
+        var(--hud-grad-b, var(--hud-violet))
+      )
+      border-box;
+  color: var(--hud-grad-a, var(--hud-cyan));
   animation: tile-live 1.8s ease-in-out infinite;
 }
 
@@ -85,18 +88,5 @@ const modeLabel = computed(() => t(`hud.voiceMode.${voice.value.mode}`))
   50% {
     box-shadow: 0 0 0 3px rgba(105, 206, 255, 0.1);
   }
-}
-
-.card-pop-enter-active,
-.card-pop-leave-active {
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-.card-pop-enter-from,
-.card-pop-leave-to {
-  opacity: 0;
-  transform: translateY(6px);
 }
 </style>

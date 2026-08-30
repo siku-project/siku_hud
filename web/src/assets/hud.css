@@ -20,11 +20,6 @@
   --hud-radius: 12px;
   --hud-radius-sm: 9px;
   --hud-shadow: inset 0 1px 0 rgba(245, 247, 252, 0.04), 0 10px 24px -14px rgba(0, 0, 0, 0.7);
-
-  --hud-edge: 1.4vw;
-  --hud-bottom: 2.6vh;
-  --hud-minimap-top: 21vh;
-  --hud-minimap-right: 16.8vw;
 }
 
 .hud-panel {

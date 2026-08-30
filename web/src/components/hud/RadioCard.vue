@@ -1,26 +1,27 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useHudStore } from '@/stores/hud'
 
 const { t } = useI18n()
 const { radio } = storeToRefs(useHudStore())
+
+const channel = computed(() => (radio.value.channel === '' ? '–' : radio.value.channel))
 </script>
 
 <template>
-  <Transition name="card-pop">
-    <div v-if="radio.active" class="card hud-panel">
-      <span class="card__tile" :class="{ 'card__tile--live': radio.transmitting }">
-        <v-icon size="15" icon="mdi-radio-handheld" />
-      </span>
+  <div class="card hud-panel">
+    <span class="card__tile" :class="{ 'card__tile--live': radio.transmitting }">
+      <v-icon size="15" icon="mdi-radio-handheld" />
+    </span>
 
-      <div class="card__body">
-        <span class="hud-caption">{{ t('hud.radio') }}</span>
-        <span class="card__main">{{ t('hud.radioChannel', { channel: radio.channel }) }}</span>
-        <span v-if="radio.label" class="card__sub">{{ radio.label }}</span>
-      </div>
+    <div class="card__body">
+      <span class="hud-caption">{{ t('hud.radio') }}</span>
+      <span class="card__main">{{ t('hud.radioChannel', { channel }) }}</span>
+      <span v-if="radio.label" class="card__sub">{{ radio.label }}</span>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style scoped>
@@ -50,8 +51,13 @@ const { radio } = storeToRefs(useHudStore())
   border-color: transparent;
   background:
     linear-gradient(var(--hud-tile), var(--hud-tile)) padding-box,
-    linear-gradient(135deg, var(--hud-cyan), var(--hud-violet)) border-box;
-  color: var(--hud-violet);
+    linear-gradient(
+        135deg,
+        var(--hud-grad-a, var(--hud-cyan)),
+        var(--hud-grad-b, var(--hud-violet))
+      )
+      border-box;
+  color: var(--hud-grad-b, var(--hud-violet));
   animation: tile-live 1.8s ease-in-out infinite;
 }
 
@@ -76,24 +82,11 @@ const { radio } = storeToRefs(useHudStore())
 @keyframes tile-live {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(161, 140, 255, 0);
+    box-shadow: 0 0 0 0 rgba(161, 140, 255, 0.1);
   }
 
   50% {
     box-shadow: 0 0 0 3px rgba(161, 140, 255, 0.1);
   }
-}
-
-.card-pop-enter-active,
-.card-pop-leave-active {
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-.card-pop-enter-from,
-.card-pop-leave-to {
-  opacity: 0;
-  transform: translateY(6px);
 }
 </style>

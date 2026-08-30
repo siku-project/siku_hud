@@ -6,13 +6,16 @@ import DevFab from '@/components/boilerplate/DevFab.vue'
 import DevViewSelector from '@/components/boilerplate/DevViewSelector.vue'
 import HudDevPanel from '@/components/dev/HudDevPanel.vue'
 import HudView from '@/views/HudView.vue'
+import { buildMockCustomization } from '@/mock/customization'
 import { resolveScenario } from '@/mock/scenarios'
+import { useCustomizationStore } from '@/stores/customization'
 import { useHudStore } from '@/stores/hud'
 import backgroundUrl from '@/assets/boilerplate-background.jpg'
 
 const params = new URLSearchParams(window.location.search)
 
 useHudStore().applyState(resolveScenario(params.get('scenario')))
+useCustomizationStore().applyPayload(buildMockCustomization())
 
 const showPanel = params.get('panel') !== '0'
 

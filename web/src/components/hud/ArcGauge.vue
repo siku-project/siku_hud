@@ -52,8 +52,8 @@ const stroke = computed(() => {
     <svg class="gauge__ring" viewBox="0 0 100 100" aria-hidden="true">
       <defs>
         <linearGradient :id="gradientId" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#69ceff" />
-          <stop offset="100%" stop-color="#a18cff" />
+          <stop offset="0%" style="stop-color: var(--hud-grad-a, #69ceff)" />
+          <stop offset="100%" style="stop-color: var(--hud-grad-b, #a18cff)" />
         </linearGradient>
       </defs>
 
