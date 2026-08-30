@@ -1,10 +1,30 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import { buildMockCustomization } from '@/mock/customization'
+import { useCustomizationStore } from '@/stores/customization'
 import { useHudStore } from '@/stores/hud'
 import { headingToCardinal } from '@/utils/hud'
 import type { VehicleStateEntry, VehicleStateTone } from '@/types/hud'
 
 const store = useHudStore()
+const customization = useCustomizationStore()
+
+const ALL_COMPONENTS = buildMockCustomization().components
+
+const isComponentEnabled = (id: string): boolean =>
+  customization.components.some((component) => component.id === id)
+
+const toggleComponent = (id: string, enabled: boolean): void => {
+  const kept = ALL_COMPONENTS.filter((component) =>
+    component.id === id ? enabled : isComponentEnabled(component.id),
+  )
+
+  customization.applyPayload({
+    limits: customization.limits,
+    components: kept,
+    prefs: JSON.parse(JSON.stringify(customization.prefs)),
+  })
+}
 
 const vehiclePrefs = reactive({
   bike: false,
@@ -62,6 +82,21 @@ const setHeading = (value: number): void => {
 <template>
   <aside class="panel">
     <p class="panel__title">HUD DEBUG</p>
+
+    <section class="panel__section">
+      <p class="panel__label">Customisation</p>
+      <button type="button" class="panel__button" @click="customization.openSettings()">
+        Ouvrir /hud
+      </button>
+      <label v-for="component in ALL_COMPONENTS" :key="component.id" class="row row--check">
+        <span>{{ component.id }}</span>
+        <input
+          type="checkbox"
+          :checked="isComponentEnabled(component.id)"
+          @change="toggleComponent(component.id, ($event.target as HTMLInputElement).checked)"
+        />
+      </label>
+    </section>
 
     <section class="panel__section">
       <p class="panel__label">Vitals</p>
@@ -394,6 +429,20 @@ const setHeading = (value: number): void => {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(164, 172, 188, 0.7);
+}
+
+.panel__button {
+  border: 1px solid rgba(105, 206, 255, 0.45);
+  border-radius: 7px;
+  background: rgba(105, 206, 255, 0.1);
+  padding: 6px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #69ceff;
+}
+
+.panel__button:hover {
+  background: rgba(105, 206, 255, 0.18);
 }
 
 .row {
