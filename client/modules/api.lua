@@ -102,16 +102,40 @@ local function setSeatbelt(buckled)
   HudSeatbelt = buckled == true
 end
 
---- Shows or hides the whole HUD.
----@param visible boolean Whether the HUD is shown.
+--- Shows or hides everything drawn over the world: the interface and the
+--- native minimap together, so a screen taking over the display (character
+--- selection, an introduction) asks one resource and gets a clean frame.
+---@param visible boolean Whether the HUD and the minimap are shown.
 ---@return nil
 local function setVisible(visible)
   HudState.visible = visible == true
+  DisplayRadar(HudState.visible)
   HudPush('setVisible', { visible = HudState.visible })
+end
+
+--- Shows the HUD and the minimap.
+---@return nil
+local function showHud()
+  setVisible(true)
+end
+
+--- Hides the HUD and the minimap.
+---@return nil
+local function hideHud()
+  setVisible(false)
+end
+
+--- Whether the HUD is currently shown.
+---@return boolean visible Whether the HUD and the minimap are shown.
+local function isHudVisible()
+  return HudState.visible
 end
 
 exports('SetStatus', setStatus)
 exports('SetVoice', setVoice)
 exports('SetRadio', setRadio)
 exports('SetSeatbelt', setSeatbelt)
+exports('ShowHud', showHud)
+exports('HideHud', hideHud)
+exports('IsHudVisible', isHudVisible)
 exports('SetVisible', setVisible)

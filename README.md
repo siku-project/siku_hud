@@ -96,7 +96,9 @@ Everything the HUD cannot read from the game itself arrives through client expor
 | `SetVoice` | `{ mode?, range?, active? }` | Updates the voice card. `mode`: `'whisper'` / `'normal'` / `'shout'`, `range` in meters, `active` shows or hides the card. |
 | `SetRadio` | `{ active?, channel?, label?, transmitting? }` | Updates the radio card. The card only renders while `active`. |
 | `SetSeatbelt` | `buckled` (boolean) | Sets the seatbelt state shown by the vehicle cluster. |
-| `SetVisible` | `visible` (boolean) | Shows or hides the whole HUD. |
+| `ShowHud` / `HideHud` | — | Shows or hides the whole interface **and the native minimap**. A screen taking over the display (character selection, introduction) calls these and gets a clean frame. |
+| `IsHudVisible` | — | Whether the HUD is currently shown. |
+| `SetVisible` | `visible` (boolean) | Same as `ShowHud` / `HideHud`, driven by a boolean. |
 
 ```lua
 -- From a status resource
