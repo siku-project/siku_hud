@@ -8,19 +8,18 @@ local UPSERT_QUERY <const> = table.concat({
 --- Preferences live here first, keyed by character id, and only visit the
 --- database on the way in and out: loaded when the character becomes
 --- active, written when something is dirty — periodically, on character
---- switch, on disconnect and on resource stop. The cache is owned by this
---- resource rather than grafted onto the core player cache: what crosses
---- the export boundary is a copy, so a field written there would never
---- survive; mirroring the core lifecycle events gives the same guarantees
---- without the illusion.
+--- switch, on disconnect and on resource stop. The entries are owned by
+--- this resource rather than grafted onto the core player cache: what
+--- crosses the export boundary is a copy, so a field written there would
+--- never survive. Who plays which character is the core's knowledge, asked
+--- back from its cache.
 local states <const> = {}
-local characterBySession <const> = {}
 
 --- The cached preferences of the character a session is playing.
 ---@param sessionId any The player server id.
 ---@return table? state The cache entry, or nil.
 function GetHudPrefsState(sessionId)
-  local characterId <const> = characterBySession[sessionId]
+  local characterId <const> = Siku.cache.getCurrentCharacterId(sessionId)
 
   if not characterId then
     return nil
@@ -77,8 +76,6 @@ end
 ---@param characterId number The character id.
 ---@return nil
 function LoadHudPrefs(sessionId, characterId)
-  characterBySession[sessionId] = characterId
-
   local state <const> = {
     characterId = characterId,
     prefs = {},
@@ -110,22 +107,19 @@ function LoadHudPrefs(sessionId, characterId)
   )
 end
 
---- Forgets the character a session was playing, writing what changed.
----@param sessionId number The player server id.
+--- Forgets a character that left play, writing what changed.
+---@param characterId number The character id.
 ---@return nil
-function ForgetHudPrefs(sessionId)
-  local characterId <const> = characterBySession[sessionId]
+function ForgetHudPrefs(characterId)
+  local state <const> = states[characterId]
 
-  if not characterId then
+  if not state then
     return
   end
 
-  characterBySession[sessionId] = nil
-
-  local state <const> = states[characterId]
   states[characterId] = nil
 
-  if state and state.dirty and not state.loading then
+  if state.dirty and not state.loading then
     persist(state)
   end
 end
@@ -162,12 +156,15 @@ AddEventHandler('siku:server:createCharacterInstance', function(sessionId, chara
     return
   end
 
-  ForgetHudPrefs(sessionId)
   LoadHudPrefs(sessionId, characterData.id)
 end)
 
-AddEventHandler('playerDropped', function()
-  ForgetHudPrefs(source)
+AddEventHandler('siku:server:releaseCharacterInstance', function(_, characterId)
+  if type(characterId) ~= 'number' then
+    return
+  end
+
+  ForgetHudPrefs(characterId)
 end)
 
 AddEventHandler('onResourceStop', function(resource)
