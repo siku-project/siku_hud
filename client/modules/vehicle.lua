@@ -55,10 +55,40 @@ local function signatureOf(states)
   return table.concat(parts, '|')
 end
 
+--- The values the cluster shows for a seat: the whole telemetry from the
+--- driver seat, only the presence from any other, since a passenger has
+--- no dial to read.
+---@param vehicle number The vehicle entity.
+---@param driver boolean Whether the character holds the wheel.
+---@return table incoming The collected values.
+local function collectTelemetry(vehicle, driver)
+  if not driver then
+    return { active = true, driver = false }
+  end
+
+  local gearIndex <const> = GetVehicleCurrentGear(vehicle)
+  local tank = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume')
+
+  if tank <= 0 then
+    tank = DEFAULT_TANK_VOLUME
+  end
+
+  return {
+    active = true,
+    driver = true,
+    speed = math.floor(GetEntitySpeed(vehicle) * MPS_TO_KMH + 0.5),
+    gear = gearIndex == 0 and 'R' or tostring(gearIndex),
+    rpm = math.floor(GetVehicleCurrentRpm(vehicle) * RPM_STEP + 0.5) / RPM_STEP,
+    fuel = HudClampPercent((GetVehicleFuelLevel(vehicle) / tank) * 100),
+    engineTemp = math.floor(GetVehicleEngineTemperature(vehicle) + 0.5),
+  }
+end
+
 --- Collects the vehicle telemetry and forwards what changed.
 ---@return nil
 local function collectVehicle()
-  local vehicle <const> = GetVehiclePedIsIn(PlayerPedId(), false)
+  local ped <const> = PlayerPedId()
+  local vehicle <const> = GetVehiclePedIsIn(ped, false)
 
   if vehicle == 0 then
     ResetSeatbelt()
@@ -72,25 +102,12 @@ local function collectVehicle()
     return
   end
 
-  local gearIndex <const> = GetVehicleCurrentGear(vehicle)
   local engineOn <const> = GetIsVehicleEngineRunning(vehicle)
   local _, lightsOn <const>, highBeams <const> = GetVehicleLightsState(vehicle)
   local lightsMode <const> = highBeams == 1 and 'high' or (lightsOn == 1 and 'on' or 'off')
+  local driver <const> = GetPedInVehicleSeat(vehicle, -1) == ped
 
-  local tank = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume')
-
-  if tank <= 0 then
-    tank = DEFAULT_TANK_VOLUME
-  end
-
-  local patch = HudBuildPatch(HudState.vehicle, {
-    active = true,
-    speed = math.floor(GetEntitySpeed(vehicle) * MPS_TO_KMH + 0.5),
-    gear = gearIndex == 0 and 'R' or tostring(gearIndex),
-    rpm = math.floor(GetVehicleCurrentRpm(vehicle) * RPM_STEP + 0.5) / RPM_STEP,
-    fuel = HudClampPercent((GetVehicleFuelLevel(vehicle) / tank) * 100),
-    engineTemp = math.floor(GetVehicleEngineTemperature(vehicle) + 0.5),
-  })
+  local patch = HudBuildPatch(HudState.vehicle, collectTelemetry(vehicle, driver))
 
   local states <const> = buildStates(vehicle, engineOn, lightsMode)
   local signature <const> = signatureOf(states)

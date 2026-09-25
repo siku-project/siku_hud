@@ -45,6 +45,7 @@ export interface VehicleStateEntry {
 
 export interface HudVehicle {
   active: boolean
+  driver: boolean
   speed: number
   gear: string
   rpm: number
@@ -97,6 +98,7 @@ export const createHudDefaults = (): HudState => ({
   },
   vehicle: {
     active: false,
+    driver: false,
     speed: 0,
     gear: 'N',
     rpm: 0,
