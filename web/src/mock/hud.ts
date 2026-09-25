@@ -35,6 +35,7 @@ export const MOCK_HUD_STATE: HudState = {
   },
   vehicle: {
     active: true,
+    driver: true,
     speed: 128,
     gear: '4',
     rpm: 0.52,

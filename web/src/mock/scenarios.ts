@@ -44,6 +44,12 @@ const bike = (): HudState => {
   return state
 }
 
+const passenger = (): HudState => {
+  const state = clone()
+  state.vehicle.driver = false
+  return state
+}
+
 export const HUD_SCENARIOS: Record<string, () => HudState> = {
   full: clone,
   onfoot: onFoot,
@@ -51,6 +57,7 @@ export const HUD_SCENARIOS: Record<string, () => HudState> = {
   diving,
   lowvitals: lowVitals,
   bike,
+  passenger,
 }
 
 export const resolveScenario = (name: string | null): HudState =>

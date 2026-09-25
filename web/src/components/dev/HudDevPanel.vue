@@ -312,6 +312,14 @@ const setHeading = (value: number): void => {
         />
       </label>
       <label class="row row--check">
+        <span>Conducteur</span>
+        <input
+          type="checkbox"
+          :checked="store.vehicle.driver"
+          @change="store.patchVehicle({ driver: ($event.target as HTMLInputElement).checked })"
+        />
+      </label>
+      <label class="row row--check">
         <span>Moto</span>
         <input v-model="vehiclePrefs.bike" type="checkbox" />
       </label>
