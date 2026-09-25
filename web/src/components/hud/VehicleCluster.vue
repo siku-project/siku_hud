@@ -48,6 +48,8 @@ const states = computed(() =>
   props.preview && vehicle.value.states.length === 0 ? PREVIEW_STATES : vehicle.value.states,
 )
 
+const showGauges = computed(() => props.preview || vehicle.value.driver)
+
 const fuelTone = computed(() => {
   if (vehicle.value.fuel <= 15) {
     return 'alert'
@@ -75,7 +77,7 @@ const tempValueTone = computed(() => {
 
 <template>
   <div class="cluster">
-    <div class="cluster__gauges">
+    <div class="cluster__gauges" :class="{ 'cluster__gauges--hidden': !showGauges }">
       <SideGauge
         class="cluster__side cluster__side--left"
         side="left"
@@ -121,6 +123,14 @@ const tempValueTone = computed(() => {
 .cluster__gauges {
   display: flex;
   align-items: flex-end;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s;
+}
+
+.cluster__gauges--hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .cluster__speedo {

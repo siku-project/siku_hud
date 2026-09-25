@@ -2,7 +2,7 @@
 
 A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive player vitals, navigation, voice, radio, and vehicle telemetry through a lightweight, customizable interface built for immersive FiveM roleplay experiences.
 
-![Version](https://img.shields.io/badge/version-1.0.0-4785bd)
+![Version](https://img.shields.io/badge/version-1.1.0-4785bd)
 ![FiveM](https://img.shields.io/badge/fx__version-cerulean-4785bd)
 ![Lua](https://img.shields.io/badge/Lua-5.4-4785bd)
 ![Vue](https://img.shields.io/badge/NUI-Vue%203-4785bd)
@@ -14,7 +14,7 @@ A modern, modular HUD for the SIKU ecosystem — delivering clean, responsive pl
 - **Contextual visibility** — health, hunger and thirst never move; armor appears only above zero, stamina only while it is being used, oxygen only underwater, each with a fast, precise transition.
 - **Navigation bar** — a compact panel above the native GTA minimap: cardinal and heading, current street and zone, in-game time, weather and ambient temperature. The minimap, GPS and routing stay native.
 - **Voice and radio cards** — attached to the minimap cluster: microphone with mode and range, radio with channel and label. Talking and transmitting light a subtle animated gradient ring; the radio card disappears when inactive.
-- **Vehicle cluster** — a chronograph-style speedometer (large numeric speed, KM/H, gear, RPM ring with redline), a fuel gauge and an engine temperature readout hugging the dial, and a compact states bar (seatbelt, engine, lights) built to accept more states later.
+- **Vehicle cluster** — a chronograph-style speedometer (large numeric speed, KM/H, gear, RPM ring with redline), a fuel gauge and an engine temperature readout hugging the dial, and a compact states bar (seatbelt, engine, lights) built to accept more states later. The dials belong to the driver seat: a passenger only sees the states bar, in the same place.
 - **Semantic states** — buckled/running in soft success, lights in cold cyan, detached/off in warning; engine temperature stays muted until it is actually elevated or critical.
 - **Performance-first protocol** — Lua collectors poll on fixed intervals and forward **only the keys that changed**; nothing is pushed to the NUI per frame.
 - **Single state, single bridge** — one normalized HUD contract, one Pinia store, one NUI message listener; components never talk to FiveM directly.
@@ -122,7 +122,7 @@ Health, armor, stamina and oxygen, position, street and zone, in-game clock and 
 
 ### Contextual behavior
 
-- The vehicle cluster appears when entering any vehicle and disappears on exit.
+- The vehicle cluster appears when entering any vehicle and disappears on exit. Speed, RPM, gear, fuel and engine temperature are only collected and shown from the driver seat; every other seat gets the states bar alone, and only the seatbelt answers to a passenger.
 - The seatbelt state is not shown for motorcycles, cycles, boats, helicopters and planes (`seatbeltExemptClasses`).
 - Hunger and thirst are owned by [`siku_status`](https://github.com/siku-project/siku_status): the HUD only displays what it receives through `SetStatus`.
 
@@ -142,7 +142,7 @@ bun run build    # production build → web/dist
 bun run check    # format + type-check + lint
 ```
 
-In development the app boots into the HUD over a game screenshot, with a debug panel driving every value and state. Scenario presets are available through the URL: `?scenario=full|onfoot|sprint|diving|lowvitals|bike`, and `?panel=0` hides the panel. None of it ships in the production build.
+In development the app boots into the HUD over a game screenshot, with a debug panel driving every value and state. Scenario presets are available through the URL: `?scenario=full|onfoot|sprint|diving|lowvitals|bike|passenger`, and `?panel=0` hides the panel. None of it ships in the production build.
 
 ```
 siku_hud/
